@@ -1,0 +1,402 @@
+/* ==========================================================================
+   About Section CSS - Dark Glassmorphism Theme
+   ========================================================================== */
+
+.about {
+  padding: 6rem 2rem;
+  background: #000000;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+
+/* ==========================================================================
+   Section Heading
+   ========================================================================== */
+
+.section-heading {
+  margin-bottom: 3.5rem;
+}
+
+.section-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #818cf8;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.section-heading h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    #6366f1 0%,
+    #a855f7 50%,
+    #ec4899 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* ==========================================================================
+   About Content
+   ========================================================================== */
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+
+/* ==========================================================================
+   Left Column
+   ========================================================================== */
+
+.about-text-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+
+/* Bio Card */
+
+.bio-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.bio-card p {
+  color: #a1a1aa;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.bio-card p:last-child {
+  margin-bottom: 0;
+}
+
+.highlight-name {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+
+/* ==========================================================================
+   Technology Tags
+   ========================================================================== */
+
+.skills-preview {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.skills-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e4e4e7;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.tech-tag {
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+
+  color: #c7d2fe;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  transition: all 0.25s ease;
+}
+
+.tech-tag:hover {
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #ffffff;
+
+  transform: translateY(-2px);
+}
+
+
+/* ==========================================================================
+   Right Side Detail Cards
+   ========================================================================== */
+
+.about-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.detail-card {
+  background: rgba(255, 255, 255, 0.02);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  border-radius: 16px;
+
+  padding: 1.5rem;
+
+  transition:
+    all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.detail-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+
+  border-color: rgba(255, 255, 255, 0.2);
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 15px 30px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Card Header */
+
+.card-header {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 0.75rem;
+}
+
+.detail-number {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #6366f1;
+}
+
+.card-icon {
+  font-size: 1.4rem;
+}
+
+.card-category {
+  font-size: 0.75rem;
+
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  color: #a855f7;
+
+  text-transform: uppercase;
+
+  display: block;
+
+  margin-bottom: 0.35rem;
+}
+
+.card-title {
+  font-size: 1.15rem;
+
+  font-weight: 700;
+
+  color: #ffffff;
+
+  margin-bottom: 0.4rem;
+}
+
+.institution {
+  color: #e4e4e7;
+
+  font-weight: 600;
+
+  font-size: 0.95rem;
+
+  margin-bottom: 0.25rem;
+}
+
+.university {
+  color: #a1a1aa;
+
+  font-size: 0.9rem;
+}
+
+
+/* ==========================================================================
+   CGPA Badge
+   ========================================================================== */
+
+.cgpa-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.4rem;
+
+  margin-top: 0.75rem;
+
+  padding: 0.35rem 0.8rem;
+
+  border-radius: 6px;
+
+  background: rgba(16, 185, 129, 0.1);
+
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.cgpa-label {
+  font-size: 0.8rem;
+
+  font-weight: 700;
+
+  color: #a1a1aa;
+}
+
+.cgpa-value {
+  font-size: 0.85rem;
+
+  font-weight: 800;
+
+  color: #10b981;
+}
+
+
+/* ==========================================================================
+   Resume Button
+   ========================================================================== */
+
+.about-action {
+  margin-top: 4rem;
+
+  text-align: center;
+}
+
+.resume-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  padding: 0.9rem 2rem;
+
+  background: #ffffff;
+
+  color: #000000;
+
+  font-weight: 700;
+
+  font-size: 1rem;
+
+  border-radius: 12px;
+
+  text-decoration: none;
+
+  transition:
+    all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+  box-shadow:
+    0 4px 20px rgba(255, 255, 255, 0.15);
+}
+
+.resume-button:hover {
+  background: #f4f4f5;
+
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
+.resume-button svg {
+  transition: transform 0.3s ease;
+}
+
+.resume-button:hover svg {
+  transform: translateX(5px);
+}
+
+
+/* ==========================================================================
+   Tablet
+   ========================================================================== */
+
+@media (max-width: 992px) {
+
+  .about-content {
+    grid-template-columns: 1fr;
+
+    gap: 2.5rem;
+  }
+}
+
+
+/* ==========================================================================
+   Mobile
+   ========================================================================== */
+
+@media (max-width: 600px) {
+
+  .about {
+    padding: 4rem 1.25rem;
+  }
+
+  .section-heading {
+    margin-bottom: 2.5rem;
+  }
+
+  .bio-card {
+    padding: 1.5rem;
+  }
+
+  .bio-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .skills-preview {
+    padding: 1.5rem;
+  }
+
+  .detail-card {
+    padding: 1.25rem;
+  }
+
+  .about-action {
+    margin-top: 3rem;
+  }
+
+  .resume-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
