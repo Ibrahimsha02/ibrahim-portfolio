@@ -1,5 +1,5 @@
 /* ==========================================================================
-   About Section CSS - Dark Glassmorphism Theme
+   About Section CSS - Side-Slide Scroll Animations & Dark Theme
    ========================================================================== */
 
 .about {
@@ -15,9 +15,55 @@
   margin: 0 auto;
 }
 
+/* ==========================================================================
+   1. Left & Right Side-Slide Scroll Reveal Animations
+   ========================================================================== */
 
 /* ==========================================================================
-   Section Heading
+   Bulletproof Side-Slide Scroll Reveal (Always Visible Fallback)
+   ========================================================================== */
+
+/* Left Side Slide-In Elements */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Right Side Slide-In Elements */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Active Class when Scrolled into View */
+.reveal-left.in-view,
+.reveal-right.in-view {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* SAFETY FALLBACK: Show all elements automatically if scrolling is delayed */
+@media (scripting: none) {
+  .reveal-left,
+  .reveal-right {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Staggered Delays */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+
+/* ==========================================================================
+   2. Section Heading & Shimmer Gradient Text
    ========================================================================== */
 
 .section-heading {
@@ -31,6 +77,12 @@
   color: #818cf8;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
+  transition: color 0.3s ease, letter-spacing 0.3s ease;
+}
+
+.section-heading:hover .section-label {
+  color: #a5b4fc;
+  letter-spacing: 4px;
 }
 
 .section-heading h2 {
@@ -40,21 +92,28 @@
   color: #ffffff;
 }
 
+/* Animated Gradient Text Shimmer */
 .gradient-text {
   background: linear-gradient(
     135deg,
     #6366f1 0%,
-    #a855f7 50%,
-    #ec4899 100%
+    #a855f7 35%,
+    #ec4899 70%,
+    #6366f1 100%
   );
-
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: textShimmer 6s linear infinite;
 }
 
+@keyframes textShimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
 
 /* ==========================================================================
-   About Content
+   3. About Content Grid
    ========================================================================== */
 
 .about-content {
@@ -64,26 +123,31 @@
   align-items: start;
 }
 
-
-/* ==========================================================================
-   Left Column
-   ========================================================================== */
-
 .about-text-column {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-
 /* Bio Card */
-
 .bio-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 2rem;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.35s ease,
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+}
+
+.bio-card:hover {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(99, 102, 241, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.15);
 }
 
 .bio-card p {
@@ -91,6 +155,11 @@
   font-size: 1.05rem;
   line-height: 1.8;
   margin-bottom: 1.25rem;
+  transition: color 0.3s ease;
+}
+
+.bio-card:hover p {
+  color: #d4d4d8;
 }
 
 .bio-card p:last-child {
@@ -100,18 +169,38 @@
 .highlight-name {
   color: #ffffff;
   font-weight: 700;
+  position: relative;
 }
 
+.highlight-name::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #6366f1, #ec4899);
+  opacity: 0.7;
+  border-radius: 2px;
+  transition: transform 0.3s ease;
+}
 
-/* ==========================================================================
-   Technology Tags
-   ========================================================================== */
+.bio-card:hover .highlight-name::after {
+  transform: scaleX(1.05);
+}
 
+/* Technology Tags */
 .skills-preview {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 1.75rem;
+  transition: all 0.3s ease;
+}
+
+.skills-preview:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(168, 85, 247, 0.3);
 }
 
 .skills-heading {
@@ -120,6 +209,11 @@
   color: #e4e4e7;
   margin-bottom: 1rem;
   letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+.skills-preview:hover .skills-heading {
+  color: #ffffff;
 }
 
 .tech-tags {
@@ -131,29 +225,25 @@
 .tech-tag {
   padding: 0.45rem 0.9rem;
   border-radius: 8px;
-
   background: rgba(99, 102, 241, 0.08);
   border: 1px solid rgba(99, 102, 241, 0.2);
-
   color: #c7d2fe;
-
   font-size: 0.85rem;
   font-weight: 600;
-
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
 }
 
 .tech-tag:hover {
-  background: rgba(99, 102, 241, 0.18);
-  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(168, 85, 247, 0.5);
   color: #ffffff;
-
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
-
 /* ==========================================================================
-   Right Side Detail Cards
+   4. Right Side Detail Cards
    ========================================================================== */
 
 .about-details {
@@ -164,37 +254,40 @@
 
 .detail-card {
   background: rgba(255, 255, 255, 0.02);
-
   border: 1px solid rgba(255, 255, 255, 0.08);
-
   border-radius: 16px;
-
   padding: 1.5rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
 
-  transition:
-    all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.detail-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  background: linear-gradient(180deg, #6366f1, #ec4899);
+  transition: height 0.35s ease;
 }
 
 .detail-card:hover {
-  background: rgba(255, 255, 255, 0.04);
-
+  background: rgba(255, 255, 255, 0.045);
   border-color: rgba(255, 255, 255, 0.2);
-
   transform: translateY(-4px);
-
-  box-shadow:
-    0 15px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
 }
 
-
-/* Card Header */
+.detail-card:hover::before {
+  height: 100%;
+}
 
 .card-header {
   display: flex;
-
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 0.75rem;
 }
 
@@ -202,189 +295,155 @@
   font-size: 0.85rem;
   font-weight: 800;
   color: #6366f1;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.detail-card:hover .detail-number {
+  color: #a855f7;
+  transform: scale(1.1);
 }
 
 .card-icon {
   font-size: 1.4rem;
+  transition: transform 0.3s ease;
+}
+
+.detail-card:hover .card-icon {
+  transform: rotate(10deg) scale(1.1);
 }
 
 .card-category {
   font-size: 0.75rem;
-
   font-weight: 700;
-
   letter-spacing: 1.5px;
-
   color: #a855f7;
-
   text-transform: uppercase;
-
   display: block;
-
   margin-bottom: 0.35rem;
+  transition: color 0.3s ease;
+}
+
+.detail-card:hover .card-category {
+  color: #c084fc;
 }
 
 .card-title {
   font-size: 1.15rem;
-
   font-weight: 700;
-
   color: #ffffff;
-
   margin-bottom: 0.4rem;
 }
 
 .institution {
   color: #e4e4e7;
-
   font-weight: 600;
-
   font-size: 0.95rem;
-
   margin-bottom: 0.25rem;
 }
 
 .university {
   color: #a1a1aa;
-
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 
+.detail-card:hover .university {
+  color: #d4d4d8;
+}
 
-/* ==========================================================================
-   CGPA Badge
-   ========================================================================== */
-
+/* CGPA Badge */
 .cgpa-badge {
   display: inline-flex;
-
   align-items: center;
-
   gap: 0.4rem;
-
   margin-top: 0.75rem;
-
   padding: 0.35rem 0.8rem;
-
   border-radius: 6px;
-
   background: rgba(16, 185, 129, 0.1);
-
   border: 1px solid rgba(16, 185, 129, 0.3);
+  transition: all 0.3s ease;
 }
 
-.cgpa-label {
-  font-size: 0.8rem;
-
-  font-weight: 700;
-
-  color: #a1a1aa;
+.detail-card:hover .cgpa-badge {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px);
 }
 
-.cgpa-value {
-  font-size: 0.85rem;
-
-  font-weight: 800;
-
-  color: #10b981;
-}
-
+.cgpa-label { font-size: 0.8rem; font-weight: 700; color: #a1a1aa; }
+.cgpa-value { font-size: 0.85rem; font-weight: 800; color: #10b981; }
 
 /* ==========================================================================
-   Resume Button
+   5. Action Button
    ========================================================================== */
 
 .about-action {
   margin-top: 4rem;
-
   text-align: center;
 }
 
 .resume-button {
   display: inline-flex;
-
   align-items: center;
-
   gap: 0.75rem;
-
   padding: 0.9rem 2rem;
-
   background: #ffffff;
-
   color: #000000;
-
   font-weight: 700;
-
   font-size: 1rem;
-
   border-radius: 12px;
-
   text-decoration: none;
-
-  transition:
-    all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-
-  box-shadow:
-    0 4px 20px rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
 }
 
 .resume-button:hover {
   background: #f4f4f5;
-
   transform: translateY(-3px);
-
-  box-shadow:
-    0 8px 25px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
 }
 
 .resume-button svg {
-  transition: transform 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .resume-button:hover svg {
-  transform: translateX(5px);
+  transform: translateX(6px);
 }
 
-
 /* ==========================================================================
-   Tablet
+   6. Responsiveness
    ========================================================================== */
 
 @media (max-width: 992px) {
-
   .about-content {
     grid-template-columns: 1fr;
-
     gap: 2.5rem;
   }
 }
 
-
-/* ==========================================================================
-   Mobile
-   ========================================================================== */
-
 @media (max-width: 600px) {
-
   .about {
     padding: 4rem 1.25rem;
+  }
+
+  .reveal-left,
+  .reveal-right {
+    transform: translateY(40px); /* Smooth slide up on mobile for better small screen feel */
   }
 
   .section-heading {
     margin-bottom: 2.5rem;
   }
 
-  .bio-card {
+  .bio-card,
+  .skills-preview {
     padding: 1.5rem;
   }
 
   .bio-card p {
     font-size: 0.95rem;
     line-height: 1.7;
-  }
-
-  .skills-preview {
-    padding: 1.5rem;
   }
 
   .detail-card {

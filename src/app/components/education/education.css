@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Education Section CSS - #000000 Theme
+   Education Section CSS - #000000 Theme with Side-Slide Scroll Animations
    ========================================================================== */
 
 .education {
@@ -7,6 +7,7 @@
   background-color: #000000;
   color: #ffffff;
   position: relative;
+  overflow: hidden;
 }
 
 .education-container {
@@ -14,7 +15,61 @@
   margin: 0 auto;
 }
 
-/* Section Header */
+/* ==========================================================================
+   1. Left & Right Side-Slide Scroll Reveal Animations
+   ========================================================================== */
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-70px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(70px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Active State when Scrolled into View */
+.reveal-left.in-view,
+.reveal-right.in-view {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* Staggered Wave Delays for Timeline Cards */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.25s; }
+.delay-3 { transition-delay: 0.4s; }
+
+/* Pure CSS Scroll Timeline Fallback */
+.section-heading,
+.education-card {
+  animation: scrollRevealUp linear both;
+  animation-timeline: view();
+  animation-range: entry 10% cover 30%;
+}
+
+@keyframes scrollRevealUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   2. Section Header & Animated Gradient Text Shimmer
+   ========================================================================== */
+
 .section-heading {
   margin-bottom: 4rem;
 }
@@ -26,6 +81,12 @@
   color: #818cf8;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
+  transition: color 0.3s ease, letter-spacing 0.3s ease;
+}
+
+.section-heading:hover .section-label {
+  color: #a5b4fc;
+  letter-spacing: 4px;
 }
 
 .section-heading h2 {
@@ -41,15 +102,37 @@
   color: #a1a1aa;
   max-width: 600px;
   line-height: 1.6;
+  transition: color 0.3s ease;
 }
 
+.section-heading:hover .section-description {
+  color: #d4d4d8;
+}
+
+/* Animated Gradient Text Shimmer */
 .gradient-text {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  background: linear-gradient(
+    135deg,
+    #6366f1 0%,
+    #a855f7 35%,
+    #ec4899 70%,
+    #6366f1 100%
+  );
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: textShimmer 6s linear infinite;
 }
 
-/* Timeline Wrapper */
+@keyframes textShimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ==========================================================================
+   3. Timeline Wrapper & Cards
+   ========================================================================== */
+
 .timeline-wrapper {
   position: relative;
   padding-left: 2.5rem;
@@ -92,7 +175,7 @@
   justify-content: center;
   z-index: 2;
   box-shadow: 0 0 12px rgba(99, 102, 241, 0.6);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dot-inner {
@@ -113,15 +196,16 @@
 }
 
 .education-card:hover .card-glass-content {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.045);
   border-color: rgba(99, 102, 241, 0.4);
   transform: translateX(8px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.15);
 }
 
 .education-card:hover .timeline-dot {
   border-color: #ec4899;
-  box-shadow: 0 0 16px rgba(236, 72, 153, 0.8);
+  box-shadow: 0 0 18px rgba(236, 72, 153, 0.9);
+  transform: scale(1.15);
 }
 
 .card-meta {
@@ -140,6 +224,13 @@
   border-radius: 6px;
   background: rgba(99, 102, 241, 0.1);
   border: 1px solid rgba(99, 102, 241, 0.25);
+  transition: all 0.3s ease;
+}
+
+.education-card:hover .education-year {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #ffffff;
 }
 
 .education-type {
@@ -148,6 +239,7 @@
   letter-spacing: 1.5px;
   color: #a855f7;
   text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
 .degree-title {
@@ -169,6 +261,11 @@
   color: #a1a1aa;
   line-height: 1.6;
   margin-bottom: 1.25rem;
+  transition: color 0.3s ease;
+}
+
+.education-card:hover .university-name {
+  color: #d4d4d8;
 }
 
 /* Info Pills */
@@ -187,6 +284,7 @@
   font-weight: 600;
   padding: 0.35rem 0.85rem;
   border-radius: 8px;
+  transition: all 0.25s ease;
 }
 
 .info-pill.cgpa {
@@ -194,6 +292,12 @@
   border: 1px solid rgba(16, 185, 129, 0.3);
   color: #10b981;
   font-weight: 700;
+}
+
+.education-card:hover .info-pill.cgpa {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px);
 }
 
 .info-pill.location {
@@ -208,12 +312,32 @@
   color: #c7d2fe;
 }
 
+.education-card:hover .info-pill.tech {
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   4. Responsiveness
+   ========================================================================== */
+
 @media (max-width: 640px) {
+  .education {
+    padding: 4rem 1.25rem;
+  }
+
   .timeline-wrapper {
     padding-left: 1.75rem;
   }
 
   .timeline-dot {
     left: -1.75rem;
+  }
+
+  .reveal-left,
+  .reveal-right {
+    transform: translateY(35px);
   }
 }

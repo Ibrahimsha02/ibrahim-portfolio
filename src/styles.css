@@ -1,15 +1,11 @@
-/* Import Modern Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* ==========================================================================
+   Global Stylesheet - Ibrahim Sha Portfolio
+   Theme: Pitch Black (#000000) & Neon Accent Glows
+   ========================================================================== */
 
-:root {
-  --bg-color: #000000;
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-  --accent-glow: rgba(139, 92, 246, 0.4);
-  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
+/* 1. Global Resets & Typography */
 * {
   margin: 0;
   padding: 0;
@@ -18,24 +14,98 @@
 
 html {
   scroll-behavior: smooth;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
 }
-/* 2. Prevent Top Navbar Overlap when Clicking Anchor Links */
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 2. Fixed Navbar Scroll Offset Fix */
 section,
 [id] {
-  scroll-margin-top: 85px; /* Matches the exact height of your fixed navbar */
+  scroll-margin-top: 85px; /* Ensures navbar never covers section headings when scrolling */
 }
-/* 3. Reduce Motion Accessibility Check (Respects user preference) */
+
+/* 3. Global Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.5);
+}
+
+/* ==========================================================================
+   4. Global Side-Slide Scroll Reveal Animations
+   ========================================================================== */
+
+/* Off-Screen Initial State (Hidden until scrolled into view) */
+.reveal-left {
+  opacity: 0 !important;
+  transform: translateX(-60px) !important;
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: opacity, transform;
+}
+
+.reveal-right {
+  opacity: 0 !important;
+  transform: translateX(60px) !important;
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: opacity, transform;
+}
+
+.reveal-up {
+  opacity: 0 !important;
+  transform: translateY(50px) !important;
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  will-change: opacity, transform;
+}
+
+/* ON-SCREEN ACTIVE STATE: Slides in when scrolled into view */
+.reveal-left.in-view,
+.reveal-right.in-view,
+.reveal-up.in-view {
+  opacity: 1 !important;
+  transform: translate(0, 0) !important;
+}
+
+/* Staggered Card Wave Delays */
+.delay-1 { transition-delay: 0.1s !important; }
+.delay-2 { transition-delay: 0.25s !important; }
+.delay-3 { transition-delay: 0.4s !important; }
+.delay-4 { transition-delay: 0.55s !important; }
+
+/* 5. Reduced Motion Preference Check */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-}
-
-body {
-  background: linear-gradient(
-    180deg, 
-    #08090f 0%, 
-    #030305 40%, 
-    #000000 100%
-  ) !important;
+  .reveal-left,
+  .reveal-right,
+  .reveal-up {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }

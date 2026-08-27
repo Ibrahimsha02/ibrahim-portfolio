@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Skills Section CSS - #000000 Theme
+   Skills Section CSS - #000000 Theme with Left & Right Side-Slide Animations
    ========================================================================== */
 
 .skills {
@@ -7,6 +7,7 @@
   background-color: #000000;
   color: #ffffff;
   position: relative;
+  overflow: hidden;
 }
 
 .skills-container {
@@ -14,7 +15,50 @@
   margin: 0 auto;
 }
 
-/* Section Header */
+/* ==========================================================================
+   1. Left & Right Side-Slide Scroll Reveal Animations
+   ========================================================================== */
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-70px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(70px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Active State when Scrolled into View */
+.reveal-left.in-view,
+.reveal-right.in-view {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+}
+
+/* Staggered Wave Delays */
+.delay-1 {
+  transition-delay: 0.1s;
+}
+.delay-2 {
+  transition-delay: 0.25s;
+}
+.delay-3 {
+  transition-delay: 0.4s;
+}
+
+/* ==========================================================================
+   2. Section Heading & Animated Gradient Text Shimmer
+   ========================================================================== */
+
 .section-heading {
   margin-bottom: 3.5rem;
 }
@@ -26,6 +70,14 @@
   color: #818cf8;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
+  transition:
+    color 0.3s ease,
+    letter-spacing 0.3s ease;
+}
+
+.section-heading:hover .section-label {
+  color: #a5b4fc;
+  letter-spacing: 4px;
 }
 
 .section-heading h2 {
@@ -41,22 +93,41 @@
   color: #a1a1aa;
   max-width: 600px;
   line-height: 1.6;
+  transition: color 0.3s ease;
 }
 
+.section-heading:hover .section-description {
+  color: #d4d4d8;
+}
+
+/* Animated Gradient Text Shimmer */
 .gradient-text {
-  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 35%, #ec4899 70%, #6366f1 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: textShimmer 6s linear infinite;
 }
 
-/* Skills Grid */
+@keyframes textShimmer {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ==========================================================================
+   3. Skills Grid & Cards
+   ========================================================================== */
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
 
-/* Skill Card */
 .skill-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -68,6 +139,7 @@
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .card-top {
@@ -81,6 +153,14 @@
   font-size: 0.9rem;
   font-weight: 800;
   color: #818cf8;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.skill-card:hover .skill-number {
+  color: #a855f7;
+  transform: scale(1.1);
 }
 
 .skill-icon-badge {
@@ -93,7 +173,7 @@
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .skill-card h3 {
@@ -101,6 +181,7 @@
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 0.6rem;
+  transition: color 0.3s ease;
 }
 
 .skill-card p {
@@ -109,6 +190,11 @@
   line-height: 1.6;
   margin-bottom: 1.5rem;
   flex-grow: 1;
+  transition: color 0.3s ease;
+}
+
+.skill-card:hover p {
+  color: #d4d4d8;
 }
 
 /* Skill Tags */
@@ -126,68 +212,94 @@
   color: #d4d4d8;
   font-size: 0.8rem;
   font-weight: 600;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Hover Accent Effects per Card */
+/* ==========================================================================
+   4. Custom Hover Glow Accents per Card Category
+   ========================================================================== */
+
 .skill-card:hover {
   transform: translateY(-6px);
   background: rgba(255, 255, 255, 0.04);
 }
 
+/* Frontend Card */
 .card-frontend:hover {
   border-color: rgba(99, 102, 241, 0.5);
   box-shadow: 0 15px 35px rgba(99, 102, 241, 0.2);
 }
 .card-frontend:hover .skill-icon-badge {
   background: #6366f1;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
 }
 
+/* Backend Card */
 .card-backend:hover {
   border-color: rgba(16, 185, 129, 0.5);
   box-shadow: 0 15px 35px rgba(16, 185, 129, 0.2);
 }
 .card-backend:hover .skill-icon-badge {
   background: #10b981;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
 }
 
+/* Database Card */
 .card-database:hover {
   border-color: rgba(59, 130, 246, 0.5);
   box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2);
 }
 .card-database:hover .skill-icon-badge {
   background: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
 }
 
+/* Programming Card */
 .card-programming:hover {
   border-color: rgba(245, 158, 11, 0.5);
   box-shadow: 0 15px 35px rgba(245, 158, 11, 0.2);
 }
 .card-programming:hover .skill-icon-badge {
   background: #f59e0b;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
 }
 
+/* AI Card */
 .card-ai:hover {
   border-color: rgba(168, 85, 247, 0.5);
   box-shadow: 0 15px 35px rgba(168, 85, 247, 0.2);
 }
 .card-ai:hover .skill-icon-badge {
   background: #a855f7;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
 }
 
+/* Tools Card */
 .card-tools:hover {
   border-color: rgba(236, 72, 153, 0.5);
   box-shadow: 0 15px 35px rgba(236, 72, 153, 0.2);
 }
 .card-tools:hover .skill-icon-badge {
   background: #ec4899;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
 }
 
 .skill-card:hover .tag {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.25);
   color: #ffffff;
   background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   5. Responsiveness
+   ========================================================================== */
 
 @media (max-width: 992px) {
   .skills-grid {
@@ -196,7 +308,16 @@
 }
 
 @media (max-width: 640px) {
+  .skills {
+    padding: 4rem 1.25rem;
+  }
+
   .skills-grid {
     grid-template-columns: 1fr;
+  }
+
+  .reveal-left,
+  .reveal-right {
+    transform: translateY(35px); /* Smooth slide up on mobile for smaller viewports */
   }
 }
