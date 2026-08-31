@@ -1,59 +1,86 @@
-# IbrahimPortfolio
+# 💻 Ibrahimsha — Personal Developer Portfolio Website
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.6.
+![Angular 19](https://img.shields.io/badge/Angular-19.0-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![CSS3 Glassmorphism](https://img.shields.io/badge/CSS3-Glassmorphism-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-## Development server
+A modern, high-performance personal developer portfolio website built to showcase Full-Stack and Angular projects, technical skills, client work, and contact inquiries. Designed with **Angular 19 Standalone Components**, glassmorphic design system, dynamic theme switching, and smooth section scrolling.
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## ⭐ Key Features
+
+* 🚀 **Interactive Project Showcase Gallery**: Displays featured web applications with tech stack badges, live demo links, and GitHub repository links.
+* 🎨 **Executive Glassmorphism UI Design**: Ultra-responsive layout supporting mobile viewports (320px) up to 4K desktop screens (1920px+).
+* 🌙 **Instant Light / Dark Mode Toggle**: Smooth appearance theme switching with CSS design tokens and Angular signals.
+* 📄 **Interactive Resume / Experience Timeline**: Highlights technical experience, education, key achievements, and downloadable PDF resume.
+* 📬 **Direct Contact & Inquiry Form**: Built-in contact form allowing recruiters and prospective clients to get in touch directly.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| **Frontend Framework** | Angular 19 (Standalone Architecture) |
+| **State & Logic** | Angular Signals (`signal<T>`, `computed()`), TypeScript 5.6 |
+| **Styling** | Vanilla CSS3 (Custom Variables, Flexbox, Grid, Glassmorphism) |
+| **Icons & Fonts** | FontAwesome 6 Pro, Google Fonts (`Outfit`, `Inter`) |
+| **Deployment** | Vercel / Netlify (Continuous Deployment) |
+
+---
+
+## 📂 Project Folder Architecture
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── hero/            # Intro banner & CTA buttons
+│   │   ├── about/           # Bio & technical skills grid
+│   │   ├── projects/        # Featured projects showcase gallery
+│   │   ├── experience/      # Work history timeline & resume download
+│   │   ├── contact/         # Direct email inquiry form & social links
+│   │   ├── navbar/          # Responsive header & theme toggle
+│   │   └── footer/          # Copyright & quick links
+│   ├── services/            # Theme & Project data signals services
+│   ├── app.routes.ts        # Routing navigation
+│   └── app.ts               # Root component
+└── index.html               # Meta description & OpenGraph social tags
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🚀 Local Installation & Setup
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Prerequisites
+* Node.js `v18.x` or higher
+* npm `v9.x` or higher
 
 ```bash
-ng generate --help
+# 1. Clone the repository
+git clone https://github.com/Ibrahimsha02/ibrahim-portfolio.git
+
+# 2. Change into the project directory
+cd ibrahim-portfolio
+
+# 3. Install project dependencies
+npm install
+
+# 4. Run local development server
+npm run dev
+# or
+npx ng serve
 ```
 
-## Building
+Navigate to `http://localhost:4200/` in your web browser.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## 📄 License
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This project is open-source under the [MIT License](LICENSE).
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Developed with ❤️ by **Ibrahimsha**.
