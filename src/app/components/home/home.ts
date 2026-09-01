@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, inject, PLATFORM_ID, NgZone } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -10,10 +10,6 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class Home implements OnInit, AfterViewInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
-  private ngZone = inject(NgZone);
-
-  @ViewChild('videoContainer') videoContainer!: ElementRef<HTMLDivElement>;
-  @ViewChild('videoWrapper') videoWrapper!: ElementRef<HTMLDivElement>;
 
   // Role Text Typing State
   roles: string[] = [
@@ -29,19 +25,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
   // Animation Frame Handles & Event Listeners
   private canvasAnimationFrameId: number | null = null;
-  private scrollAnimationFrameId: number | null = null;
   private resizeListener: (() => void) | null = null;
-  private scrollListener: (() => void) | null = null;
 
-  // Scroll-Driven Video Zoom Lerp State
-  private targetScale = 0.88;
-  private currentScale = 0.88;
-  private targetRadius = 24;
-  private currentRadius = 24;
-  private targetShadow = 0.15;
-  private currentShadow = 0.15;
-
-  private isReducedMotion = false;
   private isTouchDevice = false;
 
   // 3D Card Tilt State
@@ -67,7 +52,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.initCanvasAnimation();
-      this.initVideoScrollAnimation();
     }
   }
 
@@ -78,13 +62,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     if (this.canvasAnimationFrameId !== null) {
       cancelAnimationFrame(this.canvasAnimationFrameId);
     }
-    if (this.scrollAnimationFrameId !== null) {
-      cancelAnimationFrame(this.scrollAnimationFrameId);
-    }
     if (isPlatformBrowser(this.platformId)) {
-      if (this.scrollListener) {
-        window.removeEventListener('scroll', this.scrollListener);
-      }
       if (this.resizeListener) {
         window.removeEventListener('resize', this.resizeListener);
       }
@@ -92,81 +70,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* ==========================================================================
-     1. Scroll-Driven Video Motion Zoom (rAF + Lerp + Controlled Range)
-     ========================================================================== */
-  private initVideoScrollAnimation(): void {
-    this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (this.isReducedMotion) {
-      if (this.videoWrapper?.nativeElement) {
-        this.videoWrapper.nativeElement.style.transform = 'scale(1)';
-        this.videoWrapper.nativeElement.style.borderRadius = '16px';
-      }
-      return;
-    }
-
-    // Run scroll calculations outside Angular's Zone to prevent 60fps change-detection overhead
-    this.ngZone.runOutsideAngular(() => {
-      this.scrollListener = () => {
-        this.calculateVideoScrollProgress();
-      };
-
-      window.addEventListener('scroll', this.scrollListener, { passive: true });
-      this.calculateVideoScrollProgress();
-      this.startVideoAnimationLoop();
-    });
-  }
-
-  private calculateVideoScrollProgress(): void {
-    if (!this.videoContainer?.nativeElement) return;
-
-    const rect = this.videoContainer.nativeElement.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
-
-    // Responsive zoom configuration
-    const isMobile = windowWidth <= 600;
-    const isTablet = windowWidth <= 992 && windowWidth > 600;
-
-    const minScale = isMobile ? 0.94 : isTablet ? 0.90 : 0.88;
-    const maxScale = isMobile ? 1.04 : isTablet ? 1.08 : 1.14;
-
-    const minRadius = isMobile ? 6 : 0;
-    const maxRadius = isMobile ? 16 : 24;
-
-    // Controlled Animation Trigger Range:
-    // Starts when video container enters lower 85% of viewport, reaches maximum scale at top/center
-    const startTrigger = windowHeight * 0.85;
-    const endTrigger = windowHeight * 0.18;
-    const totalDistance = startTrigger - endTrigger;
-    const currentPos = startTrigger - rect.top;
-
-    let progress = currentPos / totalDistance;
-    progress = Math.max(0, Math.min(1, progress));
-
-    // Interpolate targets based on progress
-    this.targetScale = minScale + progress * (maxScale - minScale);
-    this.targetRadius = maxRadius - progress * (maxRadius - minRadius);
-    this.targetShadow = 0.15 + progress * 0.25;
-  }
-
-  private startVideoAnimationLoop = (): void => {
-    // Linear Interpolation (Lerp) for smooth motion without jitter
-    this.currentScale += (this.targetScale - this.currentScale) * 0.1;
-    this.currentRadius += (this.targetRadius - this.currentRadius) * 0.1;
-    this.currentShadow += (this.targetShadow - this.currentShadow) * 0.1;
-
-    if (this.videoWrapper?.nativeElement) {
-      this.videoWrapper.nativeElement.style.transform = `scale(${this.currentScale.toFixed(4)})`;
-      this.videoWrapper.nativeElement.style.borderRadius = `${this.currentRadius.toFixed(1)}px`;
-      this.videoWrapper.nativeElement.style.boxShadow = `0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(168, 85, 247, ${this.currentShadow.toFixed(3)})`;
-    }
-
-    this.scrollAnimationFrameId = requestAnimationFrame(this.startVideoAnimationLoop);
-  };
-
-  /* ==========================================================================
-     2. Interactive 60fps Tech Canvas Background
+     1. Interactive 60fps Tech Canvas Background
      ========================================================================== */
   private initCanvasAnimation(): void {
     const canvas = document.getElementById('techCanvas') as HTMLCanvasElement;
@@ -243,7 +147,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /* ==========================================================================
-     3. 3D Profile Photo Tilt (Disabled on Touch Devices)
+     2. 3D Profile Photo Tilt (Disabled on Touch Devices)
      ========================================================================== */
   onMouseMove(event: MouseEvent): void {
     // Skip tilt calculation on touch/mobile devices to ensure smooth native scrolling
