@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, inject, PLATFORM_ID, NgZone } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -10,6 +10,10 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class Home implements OnInit, AfterViewInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
+  private ngZone = inject(NgZone);
+
+  @ViewChild('videoContainer') videoContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('videoWrapper') videoWrapper!: ElementRef<HTMLDivElement>;
 
   roles: string[] = [
     'Python Full Stack Developer',
@@ -21,7 +25,16 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   currentRole = this.roles[0];
   isFading = false;
   private intervalId: any;
-  private animationFrameId: number | null = null;
+  private canvasAnimationFrameId: number | null = null;
+
+  // Video Scroll Animation State
+  private scrollAnimationFrameId: number | null = null;
+  private scrollListener: (() => void) | null = null;
+  private targetScale = 0.85;
+  private currentScale = 0.85;
+  private targetRadius = 24;
+  private currentRadius = 24;
+  private isReducedMotion = false;
 
   // 3D Card Tilt State
   tiltStyle = '';
@@ -42,6 +55,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.initCanvasAnimation();
+      this.initVideoScrollAnimation();
     }
   }
 
@@ -49,11 +63,79 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-    if (this.animationFrameId !== null) {
-      cancelAnimationFrame(this.animationFrameId);
+    if (this.canvasAnimationFrameId !== null) {
+      cancelAnimationFrame(this.canvasAnimationFrameId);
+    }
+    if (this.scrollAnimationFrameId !== null) {
+      cancelAnimationFrame(this.scrollAnimationFrameId);
+    }
+    if (this.scrollListener && isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('scroll', this.scrollListener);
     }
   }
 
+  /* ==========================================================================
+     Scroll-Driven Video Zoom Animation (requestAnimationFrame + Lerp)
+     ========================================================================== */
+  private initVideoScrollAnimation(): void {
+    this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (this.isReducedMotion) {
+      if (this.videoWrapper?.nativeElement) {
+        this.videoWrapper.nativeElement.style.transform = 'scale(1)';
+        this.videoWrapper.nativeElement.style.borderRadius = '16px';
+      }
+      return;
+    }
+
+    // Run scroll listener outside Angular change detection for max 60fps performance
+    this.ngZone.runOutsideAngular(() => {
+      this.scrollListener = () => {
+        this.calculateVideoScrollProgress();
+      };
+
+      window.addEventListener('scroll', this.scrollListener, { passive: true });
+      this.calculateVideoScrollProgress();
+      this.startVideoAnimationLoop();
+    });
+  }
+
+  private calculateVideoScrollProgress(): void {
+    if (!this.videoContainer?.nativeElement) return;
+
+    const rect = this.videoContainer.nativeElement.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+    // Calculate progress: 0 when container enters viewport bottom, 1 when aligned at top/center
+    const startOffset = windowHeight * 0.85;
+    const endOffset = windowHeight * 0.15;
+    const totalDistance = startOffset - endOffset;
+    const currentDistance = startOffset - rect.top;
+
+    let progress = currentDistance / totalDistance;
+    progress = Math.max(0, Math.min(1, progress));
+
+    // Map progress (0 to 1) -> scale (0.85 to 1.12) & border-radius (24px to 0px)
+    this.targetScale = 0.85 + progress * 0.27;
+    this.targetRadius = 24 * (1 - progress);
+  }
+
+  private startVideoAnimationLoop = (): void => {
+    // Lerp (Linear Interpolation) for butter-smooth motion without jitter
+    this.currentScale += (this.targetScale - this.currentScale) * 0.1;
+    this.currentRadius += (this.targetRadius - this.currentRadius) * 0.1;
+
+    if (this.videoWrapper?.nativeElement) {
+      this.videoWrapper.nativeElement.style.transform = `scale(${this.currentScale.toFixed(4)})`;
+      this.videoWrapper.nativeElement.style.borderRadius = `${this.currentRadius.toFixed(1)}px`;
+    }
+
+    this.scrollAnimationFrameId = requestAnimationFrame(this.startVideoAnimationLoop);
+  };
+
+  /* ==========================================================================
+     Interactive 60fps Tech Canvas Background
+     ========================================================================== */
   private initCanvasAnimation(): void {
     const canvas = document.getElementById('techCanvas') as HTMLCanvasElement;
     if (!canvas) return;
@@ -71,7 +153,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
     window.addEventListener('resize', handleResize);
 
-    // Particle nodes
     const numParticles = Math.min(Math.floor(width / 25), 45);
     const particles = Array.from({ length: numParticles }, () => ({
       x: Math.random() * width,
@@ -85,7 +166,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw particle links
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -103,7 +183,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         }
       }
 
-      // Draw particles
       particles.forEach(p => {
         p.x += p.vx;
         p.y += p.vy;
@@ -119,12 +198,15 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         ctx.fill();
       });
 
-      this.animationFrameId = requestAnimationFrame(animate);
+      this.canvasAnimationFrameId = requestAnimationFrame(animate);
     };
 
     animate();
   }
 
+  /* ==========================================================================
+     3D Profile Photo Tilt
+     ========================================================================== */
   onMouseMove(event: MouseEvent): void {
     const card = event.currentTarget as HTMLElement;
     const rect = card.getBoundingClientRect();
