@@ -27,7 +27,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   isFading = false;
   private intervalId: any;
 
-  // Animation Frame Handles
+  // Animation Frame Handles & Event Listeners
   private canvasAnimationFrameId: number | null = null;
   private scrollAnimationFrameId: number | null = null;
   private resizeListener: (() => void) | null = null;
@@ -131,7 +131,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     const minScale = isMobile ? 0.94 : isTablet ? 0.90 : 0.88;
     const maxScale = isMobile ? 1.04 : isTablet ? 1.08 : 1.14;
 
-    const minRadius = isMobile ? 8 : 0;
+    const minRadius = isMobile ? 6 : 0;
     const maxRadius = isMobile ? 16 : 24;
 
     // Controlled Animation Trigger Range:
