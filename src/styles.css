@@ -96,7 +96,19 @@ section,
 .delay-3 { transition-delay: 0.4s !important; }
 .delay-4 { transition-delay: 0.55s !important; }
 
-/* 5. Reduced Motion Preference Check */
+/* ==========================================================================
+   5. Kinetic Marquee & Motion Collage Utilities
+   ========================================================================== */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.perspective-wrapper {
+  perspective: 1000px;
+}
+
+/* 6. Reduced Motion Preference Check */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -107,5 +119,8 @@ section,
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+  .marquee-track {
+    animation: none !important;
   }
 }

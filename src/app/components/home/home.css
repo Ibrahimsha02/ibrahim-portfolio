@@ -194,6 +194,18 @@
   margin-bottom: 1.25rem;
 }
 
+.role-text {
+  display: inline-block;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.role-text.fade-out {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
 .accent-sparkle {
   color: #a855f7;
   font-weight: 700;
@@ -489,6 +501,11 @@
     0 12px 30px rgba(99, 102, 241, 0.25);
 }
 
+.tilt-container {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+}
+
 .chip-top-left {
   top: 10px;
   left: -20px;
@@ -497,8 +514,13 @@
 .chip-bottom-right {
   bottom: 20px;
   right: -20px;
-
   animation-delay: 2s;
+}
+
+.chip-top-right {
+  top: 20px;
+  right: -25px;
+  animation-delay: 1s;
 }
 
 @keyframes float {
@@ -521,6 +543,39 @@
   font-weight: 700;
 
   color: #ffffff;
+}
+
+/* ==========================================================================
+   Kinetic Marquee Ticker Banner
+   ========================================================================== */
+.kinetic-ticker-container {
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.75rem 0;
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+.ticker-track {
+  display: flex;
+  white-space: nowrap;
+  width: max-content;
+  animation: marqueeScroll 25s linear infinite;
+}
+
+.ticker-track span {
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.4);
+  padding-right: 1.5rem;
+  text-transform: uppercase;
 }
 
 /* ==========================================================================

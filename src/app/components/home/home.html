@@ -23,7 +23,8 @@
       </h1>
 
       <h2 class="hero-subtitle">
-        Python Full Stack Developer <span class="accent-sparkle">&amp; AI Specialist</span>
+        <span class="role-text" [class.fade-out]="isFading">{{ currentRole }}</span>
+        <span class="accent-sparkle">&amp; AI Specialist</span>
       </h2>
 
       <p class="intro">
@@ -84,10 +85,15 @@
 
     </div>
 
-    <!-- Right Profile Photo Column -->
+    <!-- Right Profile Photo Column with 3D Mouse Tilt -->
     <div class="home-image">
 
-      <div class="image-wrapper">
+      <div 
+        class="image-wrapper tilt-container"
+        (mousemove)="onMouseMove($event)"
+        (mouseleave)="onMouseLeave()"
+        [style.transform]="tiltStyle"
+      >
 
         <!-- Glowing Rotating Ring -->
         <div class="ring-glow"></div>
@@ -110,10 +116,26 @@
           <span class="chip-text">Full Stack</span>
         </div>
 
+        <!-- Floating Badge 3 (New Motion Badge) -->
+        <div class="floating-chip chip-top-right">
+          <span class="chip-icon">🎓</span>
+          <span class="chip-text">B.Tech AI &amp; DS</span>
+        </div>
+
       </div>
 
     </div>
 
+  </div>
+
+  <!-- Continuous Kinetic Marquee Ticker Banner -->
+  <div class="kinetic-ticker-container">
+    <div class="ticker-track">
+      <span>PYTHON • DJANGO • ANGULAR • MACHINE LEARNING • REST API • MYSQL • DATA SCIENCE • </span>
+      <span>PYTHON • DJANGO • ANGULAR • MACHINE LEARNING • REST API • MYSQL • DATA SCIENCE • </span>
+      <span>PYTHON • DJANGO • ANGULAR • MACHINE LEARNING • REST API • MYSQL • DATA SCIENCE • </span>
+      <span>PYTHON • DJANGO • ANGULAR • MACHINE LEARNING • REST API • MYSQL • DATA SCIENCE • </span>
+    </div>
   </div>
 
 </section>
