@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, inject, PLATFORM_ID, NgZone } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
@@ -10,6 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class Home implements OnInit, AfterViewInit, OnDestroy {
   private platformId = inject(PLATFORM_ID);
+  private ngZone = inject(NgZone);
 
   // Role Text Typing State
   roles: string[] = [
@@ -51,7 +52,9 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.initCanvasAnimation();
+      this.ngZone.runOutsideAngular(() => {
+        this.initCanvasAnimation();
+      });
     }
   }
 

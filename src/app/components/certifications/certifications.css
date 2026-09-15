@@ -268,15 +268,40 @@
 
 @media (max-width: 600px) {
   .certifications {
-    padding: 4rem 1.25rem;
+    padding: 2.75rem 1rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1.75rem;
   }
 
   .certifications-list {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .certification-card {
+    padding: 1.25rem 1rem;
+    border-radius: 14px;
+  }
+
+  .cert-title {
+    font-size: 1.1rem;
+  }
+
+  .cert-desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+  }
+
+  .cert-tag {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.75rem;
   }
 
   .reveal-left,
   .reveal-right {
-    transform: translateY(40px); /* Matches about.css mobile feel */
+    transform: translateY(20px);
   }
 }

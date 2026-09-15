@@ -325,19 +325,34 @@
 
 @media (max-width: 640px) {
   .education {
-    padding: 4rem 1.25rem;
+    padding: 2.75rem 1rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1.75rem;
   }
 
   .timeline-wrapper {
-    padding-left: 1.75rem;
+    padding-left: 1.25rem;
   }
 
   .timeline-dot {
-    left: -1.75rem;
+    left: -1.25rem;
+    width: 12px;
+    height: 12px;
+  }
+
+  .card-glass-content {
+    padding: 1.15rem 1rem;
+    border-radius: 14px;
+  }
+
+  .degree-title {
+    font-size: 1.05rem;
   }
 
   .reveal-left,
   .reveal-right {
-    transform: translateY(35px);
+    transform: translateY(20px);
   }
 }

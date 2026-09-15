@@ -20,26 +20,11 @@
    1. Left & Right Side-Slide Animations
    ========================================================================== */
 
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-50px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal-right {
-  opacity: 0;
-  transform: translateX(50px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
-}
-
-.reveal-left.in-view,
-.reveal-right.in-view {
+.footer .reveal-left,
+.footer .reveal-right {
   opacity: 1 !important;
-  transform: translateX(0) !important;
+  transform: none !important;
+  transition: opacity 0.5s ease;
 }
 
 /* ==========================================================================
@@ -131,10 +116,66 @@
 }
 
 @media (max-width: 768px) {
-  .footer-top,
+  .footer {
+    padding: 2.75rem 1.25rem 1.75rem;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-bottom: 2rem;
+    gap: 1.5rem;
+  }
+
+  .footer-links {
+    justify-content: center;
+    gap: 0.75rem 1.25rem;
+  }
+
   .footer-bottom {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding-top: 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .footer-social {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    padding: 2.25rem 1rem 1.5rem;
+  }
+
+  .footer-brand h2 {
+    font-size: 1.35rem;
+  }
+
+  .footer-brand p {
+    font-size: 0.86rem;
+  }
+
+  .footer-links a {
+    font-size: 0.85rem;
+  }
+
+  .copyright {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .footer-social {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-social a {
+    font-size: 0.82rem;
+    padding: 0.35rem 0.75rem;
   }
 }

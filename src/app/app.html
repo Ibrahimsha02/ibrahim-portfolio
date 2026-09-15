@@ -4,14 +4,34 @@
 
 <app-about></app-about>
 
-<app-skills></app-skills>
+@defer (on viewport) {
+  <app-skills></app-skills>
+} @placeholder {
+  <div style="min-height: 400px;"></div>
+}
 
-<app-education></app-education>
+@defer (on viewport) {
+  <app-education></app-education>
+} @placeholder {
+  <div style="min-height: 400px;"></div>
+}
 
-<app-projects></app-projects>
+@defer (on viewport) {
+  <app-projects></app-projects>
+} @placeholder {
+  <div style="min-height: 400px;"></div>
+}
 
-<app-certifications></app-certifications>
+@defer (on viewport) {
+  <app-certifications></app-certifications>
+} @placeholder {
+  <div style="min-height: 350px;"></div>
+}
 
-<app-contact></app-contact>
+@defer (on viewport) {
+  <app-contact></app-contact>
+} @placeholder {
+  <div style="min-height: 400px;"></div>
+}
 
 <app-footer></app-footer>

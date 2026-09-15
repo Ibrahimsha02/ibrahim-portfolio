@@ -309,15 +309,39 @@
 
 @media (max-width: 640px) {
   .skills {
-    padding: 4rem 1.25rem;
+    padding: 2.75rem 1rem;
+  }
+
+  .section-heading {
+    margin-bottom: 1.75rem;
   }
 
   .skills-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .skill-card {
+    padding: 1.25rem 1rem;
+    border-radius: 14px;
+  }
+
+  .skill-icon-badge {
+    width: 44px;
+    height: 44px;
+  }
+
+  .skill-title {
+    font-size: 1.15rem;
+  }
+
+  .tag {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
   }
 
   .reveal-left,
   .reveal-right {
-    transform: translateY(35px); /* Smooth slide up on mobile for smaller viewports */
+    transform: translateY(20px);
   }
 }

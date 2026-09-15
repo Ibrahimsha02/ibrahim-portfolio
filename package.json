@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:ibrahim-portfolio": "node dist/ibrahim-portfolio/server/server.mjs"
+    "serve:ssr:ibrahim-portfolio": "node dist/ibrahim-portfolio/server/server.mjs",
+    "deploy": "ng build --base-href /ibrahim-portfolio/ && ngh --dir=dist/ibrahim-portfolio/browser"
   },
   "private": true,
   "packageManager": "npm@11.16.0",
