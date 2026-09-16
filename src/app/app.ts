@@ -38,18 +38,17 @@ export class App implements AfterViewInit {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
-            } else {
-              entry.target.classList.remove('in-view'); // Resets so it animates every time you scroll back!
+              observer.unobserve(entry.target);
             }
           });
         }, {
-          threshold: 0.05,
-          rootMargin: '0px 0px -20px 0px'
+          threshold: 0.01,
+          rootMargin: '50px 0px 50px 0px'
         });
 
-        const elements = document.querySelectorAll('.reveal-left, .reveal-right');
+        const elements = document.querySelectorAll('.reveal-left, .reveal-right, .reveal-up');
         elements.forEach(el => observer.observe(el));
-      }, 200);
+      }, 150);
     }
   }
 

@@ -17,11 +17,12 @@ export class AboutComponent implements AfterViewInit {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
             }
           });
         }, {
           threshold: 0.01,
-          rootMargin: '0px 0px -50px 0px'
+          rootMargin: '50px 0px 50px 0px'
         });
 
         const elements = document.querySelectorAll('#about .reveal-left, #about .reveal-right');

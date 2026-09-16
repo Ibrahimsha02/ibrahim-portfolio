@@ -1,5 +1,5 @@
-import { Component, OnDestroy, signal, afterNextRender } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, signal, inject, PLATFORM_ID, afterNextRender } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-loader',
@@ -8,52 +8,83 @@ import { CommonModule } from '@angular/common';
   templateUrl: './loader.html',
   styleUrl: './loader.css'
 })
-export class LoaderComponent implements OnDestroy {
+export class LoaderComponent implements OnInit, OnDestroy {
+  private platformId = inject(PLATFORM_ID);
+
   progress = signal<number>(0);
   statusText = signal<string>('INITIALIZING CORE...');
   isLoaded = signal<boolean>(false);
   isRemoved = signal<boolean>(false);
 
   private animFrameId: number | null = null;
-  private fallbackTimeoutId: any = null;
+  private intervalId: any = null;
+  private masterSafetyTimeoutId: any = null;
+  private hasStarted = false;
 
   constructor() {
+    // Secondary trigger if afterNextRender fires first
     afterNextRender(() => {
       this.startProgress();
     });
   }
 
-  ngOnDestroy(): void {
-    if (this.animFrameId !== null) {
-      cancelAnimationFrame(this.animFrameId);
-    }
-    if (this.fallbackTimeoutId) {
-      clearTimeout(this.fallbackTimeoutId);
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      // 1. Master safety guarantee: unconditionally dismiss after 1.8s max under ANY circumstance
+      this.masterSafetyTimeoutId = setTimeout(() => {
+        this.finishLoading();
+      }, 1800);
+
+      // 2. Start progress immediately in the browser
+      this.startProgress();
     }
   }
 
+  ngOnDestroy(): void {
+    this.cleanup();
+  }
+
+  private cleanup(): void {
+    if (this.animFrameId !== null) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+    if (this.masterSafetyTimeoutId) {
+      clearTimeout(this.masterSafetyTimeoutId);
+      this.masterSafetyTimeoutId = null;
+    }
+  }
+
+  public dismiss(): void {
+    this.finishLoading();
+  }
+
   private startProgress(): void {
+    if (this.hasStarted || !isPlatformBrowser(this.platformId)) return;
+    this.hasStarted = true;
+
     const startTime = performance.now();
-    const duration = 1200; // 1.2s smooth count
+    const duration = 1100; // 1.1s smooth count
 
-    // Safety guarantee: under no circumstances will the site remain stuck
-    this.fallbackTimeoutId = setTimeout(() => {
-      this.finishLoading();
-    }, 2200);
+    const update = (now: number) => {
+      if (this.isLoaded()) return;
 
-    const step = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progressFraction = Math.min(elapsed / duration, 1);
+      const elapsed = now - startTime;
+      const fraction = Math.min(elapsed / duration, 1);
 
-      // Ease-out cubic curve
-      const eased = 1 - Math.pow(1 - progressFraction, 3);
+      // Smooth ease-out cubic curve
+      const eased = 1 - Math.pow(1 - fraction, 3);
       const currentVal = Math.min(Math.round(eased * 100), 100);
 
       this.progress.set(currentVal);
 
-      if (currentVal < 35) {
+      if (currentVal < 30) {
         this.statusText.set('INITIALIZING CORE...');
-      } else if (currentVal < 75) {
+      } else if (currentVal < 70) {
         this.statusText.set('LOADING EXPERIENCE...');
       } else if (currentVal < 100) {
         this.statusText.set('FINALIZING ASSETS...');
@@ -61,13 +92,22 @@ export class LoaderComponent implements OnDestroy {
         this.statusText.set('SYSTEM READY');
       }
 
-      if (progressFraction < 1) {
-        this.animFrameId = requestAnimationFrame(step);
-      } else {
+      if (fraction >= 1) {
         this.finishLoading();
       }
     };
 
+    // Use a dual ticker: interval for rock-solid mobile compatibility + rAF for high refresh rate screens
+    this.intervalId = setInterval(() => {
+      update(performance.now());
+    }, 20);
+
+    const step = (time: number) => {
+      update(time);
+      if (!this.isLoaded()) {
+        this.animFrameId = requestAnimationFrame(step);
+      }
+    };
     this.animFrameId = requestAnimationFrame(step);
   }
 
@@ -76,13 +116,14 @@ export class LoaderComponent implements OnDestroy {
 
     this.progress.set(100);
     this.statusText.set('SYSTEM READY');
+    this.cleanup();
 
     setTimeout(() => {
       this.isLoaded.set(true);
 
       setTimeout(() => {
         this.isRemoved.set(true);
-      }, 650);
-    }, 350);
+      }, 550);
+    }, 250);
   }
 }

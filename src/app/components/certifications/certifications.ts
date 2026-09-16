@@ -17,11 +17,12 @@ export class CertificationsComponent implements AfterViewInit {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
             }
           });
         }, {
-          threshold: 0.01, /* Triggers immediately when entering the screen */
-          rootMargin: '0px 0px -50px 0px'
+          threshold: 0.01,
+          rootMargin: '50px 0px 50px 0px'
         });
 
         // Observes certification cards & heading for Left & Right slide animations

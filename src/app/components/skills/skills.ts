@@ -14,11 +14,12 @@ export class SkillsComponent implements AfterViewInit {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
             }
           });
         }, {
-          threshold: 0.01, /* Triggers immediately when 1% enters the screen */
-          rootMargin: '0px 0px -50px 0px'
+          threshold: 0.01,
+          rootMargin: '50px 0px 50px 0px'
         });
 
         const elements = document.querySelectorAll('#skills .reveal-left, #skills .reveal-right, #skills .reveal-up');

@@ -14,6 +14,7 @@ export class Footer implements AfterViewInit {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
             }
           });
         }, {

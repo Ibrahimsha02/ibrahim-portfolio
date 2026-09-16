@@ -21,11 +21,12 @@ export class Contact implements AfterViewInit {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
             }
           });
         }, {
           threshold: 0.01,
-          rootMargin: '0px 0px -40px 0px'
+          rootMargin: '50px 0px 50px 0px'
         });
 
         const elements = document.querySelectorAll('#contact .reveal-left, #contact .reveal-right');
