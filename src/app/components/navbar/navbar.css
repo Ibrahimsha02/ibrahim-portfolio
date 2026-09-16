@@ -50,6 +50,43 @@
   );
 }
 
+/* ==========================================================================
+   Scroll Reading Progress Bar
+   Theme: Vibrant Laser Neon (#6366f1 -> #a855f7 -> #ec4899)
+   ========================================================================== */
+.scroll-progress-track {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+  z-index: 10005;
+  overflow: hidden;
+}
+
+.scroll-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    #6366f1 0%,
+    #8b5cf6 30%,
+    #a855f7 60%,
+    #ec4899 100%
+  );
+  transform-origin: left center;
+  transform: scaleX(0);
+  border-radius: 0 2px 2px 0;
+  box-shadow:
+    0 0 10px rgba(168, 85, 247, 0.9),
+    0 0 18px rgba(236, 72, 153, 0.7),
+    0 0 3px #ffffff;
+  will-change: transform;
+  pointer-events: none;
+}
+
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -193,6 +230,10 @@
    ========================================================================== */
 
 @media (max-width: 768px) {
+  .scroll-progress-track {
+    height: 2.5px !important;
+  }
+
   /* 1. Header Container */
   .nav-container {
     padding: 0.75rem 1rem !important;
