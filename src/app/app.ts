@@ -9,11 +9,13 @@ import { ProjectsComponent } from './components/projects/projects';
 import { CertificationsComponent } from './components/certifications/certifications';
 import { Contact } from './components/contact/contact';
 import { Footer } from './components/footer/footer';
+import { LoaderComponent } from './components/loader/loader';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
+    LoaderComponent,
     NavbarComponent,
     Home,
     AboutComponent,

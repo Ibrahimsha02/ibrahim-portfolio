@@ -1,0 +1,45 @@
+@if (!isRemoved()) {
+  <div class="loader-overlay" [class.fade-out]="isLoaded()" aria-label="Loading page">
+    <!-- Ambient Neon Background Glows -->
+    <div class="loader-glow glow-1"></div>
+    <div class="loader-glow glow-2"></div>
+
+    <!-- Centered Loader Card -->
+    <div class="loader-content">
+
+      <!-- Animated Rotating Code Logo Badge -->
+      <div class="badge-wrapper">
+        <div class="badge-ring-glow"></div>
+        <div class="loader-badge">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Developer Monogram / Name -->
+      <h3 class="loader-name">
+        Ibrahim <span class="gradient-text">Sha</span>
+      </h3>
+
+      <!-- 0 - 100% Counter (Enlarged with completion pop animation) -->
+      <div class="loader-counter" [class.complete]="progress() === 100">
+        <span class="counter-number">{{ progress() }}</span>
+        <span class="counter-percent">%</span>
+      </div>
+
+      <!-- Futuristic Shimmering Progress Bar -->
+      <div class="loader-progress-track" [class.complete]="progress() === 100">
+        <div class="loader-progress-fill" [style.width.%]="progress()"></div>
+      </div>
+
+      <!-- Status Indicator -->
+      <p class="loader-status" [class.complete]="progress() === 100">
+        <span class="status-pulse"></span>
+        {{ statusText() }}
+      </p>
+
+    </div>
+  </div>
+}
