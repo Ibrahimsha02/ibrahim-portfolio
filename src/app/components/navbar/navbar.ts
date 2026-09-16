@@ -41,10 +41,13 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (isPlatformBrowser(this.platformId) && this.scrollListener) {
-      window.removeEventListener('scroll', this.scrollListener);
-      window.removeEventListener('resize', this.scrollListener);
-      this.scrollListener = null;
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.style.overflow = '';
+      if (this.scrollListener) {
+        window.removeEventListener('scroll', this.scrollListener);
+        window.removeEventListener('resize', this.scrollListener);
+        this.scrollListener = null;
+      }
     }
   }
 
@@ -60,9 +63,23 @@ export class NavbarComponent implements AfterViewInit, OnDestroy {
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
+    this.updateBodyScrollLock();
   }
 
   closeMenu(): void {
-    this.menuOpen = false;
+    if (this.menuOpen) {
+      this.menuOpen = false;
+      this.updateBodyScrollLock();
+    }
+  }
+
+  private updateBodyScrollLock(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.menuOpen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = '';
+      }
+    }
   }
 }
